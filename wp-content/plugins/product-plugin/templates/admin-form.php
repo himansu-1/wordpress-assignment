@@ -1,12 +1,3 @@
-<?php
-if (isset($_SESSION['product_flash'])): ?>
-    <div class="notice notice-success is-dismissible">
-        <p><?php echo esc_html($_SESSION['product_flash']); ?></p>
-    </div>
-<?php
-    unset($_SESSION['product_flash']);
-endif;
-?>
 <style>
     .image-input {
         flex: 0 0 calc(100% / 4 - 10px);
@@ -90,16 +81,9 @@ endif;
                 const imageFieldsContainer = document.getElementById(`type-image-fields-${typeIndex}`);
                 const currentFields = imageFieldsContainer.querySelectorAll('input[type=\"file\"]').length;
                 if (currentFields < MAX_IMAGES) {
-                    // const input = document.createElement('input');
-                    // input.type = 'file';
-                    // input.name = `types[${typeIndex}][images][]`;
-                    // input.className = 'form-control image-input';
-                    // input.setAttribute('accept', '.jpg, .jpeg, .png');
-                    // imageFieldsContainer.appendChild(input);
                     const imageGroup = document.createElement('div');
                     imageGroup.className = 'image-group mb-2';
-                    // imageGroup.style.flex = '0 0 calc(100% / 2 - 10px)'; // Optional layout tweak
-
+                    
                     const input = document.createElement('input');
                     input.type = 'file';
                     input.name = `types[${typeIndex}][images][]`;
@@ -123,7 +107,6 @@ endif;
                     imageGroup.appendChild(descInput);
 
                     imageFieldsContainer.appendChild(imageGroup);
-
                     document.getElementById(`image-limit-msg-${typeIndex}`).style.display = 'none';
                 } else {
                     document.getElementById(`image-limit-msg-${typeIndex}`).style.display = 'inline';
