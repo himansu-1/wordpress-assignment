@@ -1,6 +1,5 @@
 <?php 
 get_header(); 
-get_template_part('template-parts/header');
 ?>
 <main>
     <h1>This is index of Blog</h1>
