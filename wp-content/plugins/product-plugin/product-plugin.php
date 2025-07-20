@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: My Product Plugin
+ * Plugin Name: WooCommerce
  * Description: A plugin to manage products, their types and images.
  * Version: 1.0
  * Author: Himansu Sekhar Sahu

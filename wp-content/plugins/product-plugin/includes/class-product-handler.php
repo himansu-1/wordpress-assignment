@@ -89,11 +89,14 @@ class Product_Handler
                                     throw new Exception("Failed to upload image $file_name.");
                                 }
 
+                                $image_name = isset($_POST['types'][$i]['image_names'][$j]) ? sanitize_text_field($_POST['types'][$i]['image_names'][$j]) : '';
+                                $image_description = isset($_POST['types'][$i]['image_descriptions'][$j]) ? sanitize_textarea_field($_POST['types'][$i]['image_descriptions'][$j]) : '';
+
                                 $inserted = $wpdb->insert(PRODUCT_IMAGE_TABLE, [
                                     'product_type_id'   => $type_id,
                                     'image_path'        => $uploaded['url'],
-                                    'image_name'        => sanitize_file_name($file_name),
-                                    'image_description' => ''
+                                    'image_name'        => $image_name,
+                                    'image_description' => $image_description
                                 ]);
 
                                 if ($inserted === false) {

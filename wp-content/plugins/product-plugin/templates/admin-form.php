@@ -17,7 +17,7 @@
             </div>
             <div class="col-3">
                 <label for="product_rating">Product Rating:</label>
-                <input type="number" name="product_rating" min="1" max="5" class="form-control" />
+                <input type="number" name="product_rating" min="1" max="5" step="0.1" pattern="^\d(\.\d)?$" class="form-control" />
                 <label>Number of Types:</label>
                 <input type="number" id="type-count" name="type_count" min="0" class="form-control" />
             </div>

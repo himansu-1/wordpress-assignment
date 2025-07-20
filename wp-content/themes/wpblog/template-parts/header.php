@@ -14,33 +14,33 @@
 </head>
 
 <body <?php body_class(); ?>>
-    <header class="bg-gray-500 text-white">
+    <header class="bg-[#A2845E] text-slate-200">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="<?php echo home_url(); ?>" class="text-2xl font-bold">MySite</a>
             <nav class="space-x-4">
                 <a
                     href="<?php echo home_url(); ?>"
-                    class="hover:text-red-400 <?php if (is_front_page()) echo 'text-red-500 font-bold'; ?>">
+                    class="hover:text-slate-300 <?php if (is_front_page()) echo 'text-white font-bold'; ?>">
                     Home
                 </a>
                 <a
                     href="<?php echo home_url('/about'); ?>"
-                    class="hover:text-red-400 <?php if (is_page('about')) echo 'text-red-500 font-bold'; ?>">
+                    class="hover:text-slate-300 <?php if (is_page('about')) echo 'text-white font-bold'; ?>">
                     About
                 </a>
                 <a
-                    href="<?php echo home_url('/blog'); ?>"
-                    class="hover:text-red-400 <?php if (is_page('blog')) echo 'text-red-500 font-bold'; ?>">
-                    Blog
+                    href="<?php echo home_url('/cart'); ?>"
+                    class="hover:text-slate-300 <?php if (is_page('cart')) echo 'text-white font-bold'; ?>">
+                    Cart
                 </a>
                 <a
                     href="<?php echo home_url('/product'); ?>"
-                    class="hover:text-red-400 <?php if (is_page('product')) echo 'text-red-500 font-bold'; ?>">
+                    class="hover:text-slate-300 <?php if ((is_page('product')) || (is_page('product-details'))) echo 'text-white font-bold'; ?>">
                     Product
                 </a>
                 <a
                     href="<?php echo home_url('/contact'); ?>"
-                    class="hover:text-red-400 <?php if (is_page('contact')) echo 'text-red-500 font-bold'; ?>">
+                    class="hover:text-slate-300 <?php if (is_page('contact')) echo 'text-white font-bold'; ?>">
                     Contact
                 </a>
             </nav>

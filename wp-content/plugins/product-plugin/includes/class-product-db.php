@@ -14,7 +14,7 @@ class Product_DB {
             id BIGINT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255),
             description TEXT,
-            rating INT,
+            rating DECIMAL,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         ) $charset_collate;");
