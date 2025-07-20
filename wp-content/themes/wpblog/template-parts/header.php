@@ -45,6 +45,21 @@
 
     <!-- ============= Favicon End ============== -->
     <?php wp_head(); ?>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Assuming your cart is stored as an array in localStorage under "cart"
+            const cartData = JSON.parse(localStorage.getItem('cart')) || [];
+            const count = cartData.length;
+
+            const badge = document.getElementById('cart-count-badge');
+            if (count > 0) {
+                badge.textContent = count;
+                badge.classList.remove('hidden');
+            }
+        });
+    </script>
 </head>
 
 <body <?php body_class(); ?>>
@@ -68,8 +83,12 @@
                 </a>
                 <a
                     href="<?php echo home_url('/cart'); ?>"
-                    class="hover:text-slate-300 <?php if (is_page('cart')) echo 'text-white font-bold'; ?>">
+                    id="cart-link"
+                    class="relative inline-block hover:text-slate-300 <?php if (is_page('cart')) echo 'text-white font-bold'; ?>">
                     Cart
+                    <span id="cart-count-badge" class="absolute -top-3 -right-4 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full hidden">
+                        0
+                    </span>
                 </a>
                 <a
                     href="<?php echo home_url('/product'); ?>"
@@ -83,4 +102,5 @@
                 </a>
             </nav>
         </div>
+
     </header>
