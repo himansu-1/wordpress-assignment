@@ -37,7 +37,9 @@ if (!empty($type_ids)) {
                 <div class="lg:w-5/12 md:w-1/2 md:p-0 p-3">
                     <div class="bg-gray-100 rounded-2xl p-8 relative">
                         <div class="flex justify-center items-center h-96">
-                            <img id="main-carousel-image" src="" alt="Product Image" class="object-contain h-full rounded-lg transition-all duration-300" />
+                            <!-- <img id="main-carousel-image" src="" alt="Product Image" class="object-contain h-full rounded-lg transition-all duration-300" /> -->
+                            <img id="main-carousel-image" data-zoomable src="" alt="Product Image" class="object-contain h-full rounded-lg transition-all duration-300 cursor-zoom-in" />
+
                         </div>
 
                         <!-- Navigation Arrows -->
@@ -110,7 +112,7 @@ if (!empty($type_ids)) {
                                             <div class="mb-4">
                                                 <h4 class="font-medium mb-4">What's Included:</h4>
                                                 <div class="row-auto flex gap-4">
-                                                <!-- <div class="grid grid-cols-2 gap-4"> -->
+                                                    <!-- <div class="grid grid-cols-2 gap-4"> -->
                                                     <div class="border-2 border-gray-200 rounded-lg p-1">
                                                         <div class="text-sm font-light text-gray-400 pb-4">Every 30 Days</div>
                                                         <div class="mx-auto flex items-center justify-center my-3">
@@ -315,10 +317,10 @@ if (!empty($type_ids)) {
 
             // Get existing cart from localStorage
             let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-            
+
             // Add item to cart
             cart.push(cartItem);
-            
+
             // Save back to localStorage
             localStorage.setItem('cart', JSON.stringify(cart));
 

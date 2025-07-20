@@ -20,7 +20,8 @@ get_header();
 
     $per_page = 6;
     // Get current page number
-    $paged = get_query_var('paged') ? intval(get_query_var('paged')) : 1;
+    // $paged = get_query_var('paged') ? intval(get_query_var('paged')) : 1;
+    $paged = get_query_var('paged') ? intval(get_query_var('paged')) : (get_query_var('page') ? intval(get_query_var('page')) : 1);
     $offset = ($paged - 1) * $per_page;
 
     $total_products = $wpdb->get_var("SELECT COUNT(*) FROM $product_table");

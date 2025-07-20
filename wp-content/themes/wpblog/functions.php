@@ -107,3 +107,19 @@ add_action('wp_enqueue_scripts', function() {
         'url' => admin_url('admin-ajax.php')
     ]);
 });
+
+// 
+function add_custom_rewrite_rules() {
+    add_rewrite_rule(
+        '^product/page/([0-9]+)/?',
+        'index.php?pagename=product&paged=$matches[1]',
+        'top'
+    );
+}
+add_action('init', 'add_custom_rewrite_rules');
+
+function add_paged_query_var($vars) {
+    $vars[] = 'paged';
+    return $vars;
+}
+add_filter('query_vars', 'add_paged_query_var');

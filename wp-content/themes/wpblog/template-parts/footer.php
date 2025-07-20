@@ -9,5 +9,14 @@
     </div>
 </footer>
 <?php wp_footer(); ?>
+
+<script>
+    mediumZoom('[data-zoomable]', {
+        margin: 24,
+        background: '#000',
+        scrollOffset: 0,
+    });
+</script>
 </body>
+
 </html>
