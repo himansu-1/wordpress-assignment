@@ -183,8 +183,8 @@ get_header();
             'sponsored' => [
                 // Parkinson project from Health projects
                 [
-                    'title' => 'AI for Climate Change',
-                    'description' => 'Exploring AI-driven solutions for monitoring and mitigating the effects of climate change, with focus on data analytics and sustainable technologies.',
+                    'title' => 'Monitoring Parkinson\'s Disease using Federated Learning and Explainable Artificial Intelligence (XAI)',
+                    'description' => 'The research project titled "Monitoring Parkinson\'s Disease using Federated Learning and Explainable Artificial Intelligence (XAI)" is funded by the MRIP scheme of the Odisha State Higher Education Council, Government of Odisha. A total grant of ₹6,72,000 (Rupees Six Lakh Seventy-Two Thousand only) has been sanctioned for the project, which is scheduled to be carried out over a duration of two years from 17-03-2025 to 16-03-2027. The project is currently ongoing.',
                     'author' => 'Sponsored by GreenTech Inc.',
                     'image' => ''
                 ],
