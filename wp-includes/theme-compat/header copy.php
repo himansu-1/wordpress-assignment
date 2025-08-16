@@ -1,7 +1,8 @@
 <?php 
-get_template_part('template-parts/header'); 
+// get_template_part('template-parts/header'); 
 ?>
-<!-- <?php
+<?php get_template_part('partials/custom-header'); ?>
+<?php
 /**
  * @package WordPress
  * @subpackage Theme_Compat
@@ -61,4 +62,4 @@ if ( is_singular() ) {
 		<div class="description"><?php bloginfo( 'description' ); ?></div>
 	</div>
 </div>
-<hr /> -->
+<hr />
