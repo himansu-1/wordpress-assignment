@@ -9,53 +9,6 @@ get_header();
 
     <!--  -->
     <!-- Carousel Slider Section -->
-    <style>
-        /* Apply these styles only on screens greater than tablet (md and larger) */
-        @media (min-width: 992px) {
-
-            /* Carousel container should have a max height of 60vh */
-            #heroCarousel {
-                max-height: 60vh;
-                overflow: hidden;
-                /* Ensure no content overflows */
-            }
-
-            /* Make sure the images fill the carousel space properly */
-            #heroCarousel .carousel-item {
-                height: 100%;
-                /* Ensure carousel items fill the height */
-            }
-
-            #heroCarousel .carousel-item img {
-                object-fit: cover;
-                /* Ensure the image covers the space without distorting */
-                height: 100%;
-                width: 100%;
-                object-position: center;
-                /* Center the image within the container */
-            }
-        }
-
-        @media (max-width: 992px) {
-
-            /* Make sure the images fill the carousel space properly */
-            #heroCarousel .carousel-item {
-                height: 100%;
-                /* Ensure carousel items fill the height */
-            }
-
-            #heroCarousel .carousel-item img {
-                object-fit: cover;
-                /* Ensure the image covers the space without distorting */
-                height: 100%;
-                max-height: 50vh;
-                overflow: hidden;
-                width: 100%;
-                object-position: center;
-                /* Center the image within the container */
-            }
-        }
-    </style>
     <section class="hero__v6 section" id="home">
         <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
@@ -86,7 +39,7 @@ get_header();
                                 <div class="col-lg-4 mb-4 mb-lg-0">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <h1 class="hero-title mb-3" data-aos="fade-up" data-aos-delay="100"><?php echo esc_html($title); ?></h1>
+                                            <h3 class="hero-title mb-3" data-aos="fade-up" data-aos-delay="100"><?php echo esc_html($title); ?></h3>
                                             <p class="hero-description mb-4 mb-lg-5 text-justify" data-aos="fade-up" data-aos-delay="200"><?php echo esc_html($description); ?></p>
                                             <div class="cta d-flex gap-2 mb-4 mb-lg-5" data-aos="fade-up" data-aos-delay="300">
                                                 <a class="btn btn-white-outline" href="<?php echo esc_url($button_link); ?>"><?php echo esc_html($button_name); ?>
@@ -357,7 +310,6 @@ get_header();
         </div>
     </section>
 
-
     <!-- Section - 5 -->
     <section class="blog section">
         <div class="container my-5">
@@ -388,9 +340,11 @@ get_header();
                     </p>
                 </div>
             </div>
-
         </div>
-        <!-- Section - 6 -->
+    </section>
+    
+    <!-- Section - 6 -->
+    <section class="media_outreach section">
         <div class="container my-5">
             <div class="row gy-4">
                 <h3 class="text-center font-bold"><span class="hilight-3">Media & Outreach:</span> Impact,  Engagement, Visibility, Spotlight & Stories</h3>
@@ -417,7 +371,10 @@ get_header();
             </div>
 
         </div>
-        <!-- Section - 7 -->
+    </section>
+    
+    <!-- Section - 7 -->
+    <section class="startup section">
         <div class="container my-5">
             <div class="row gy-4">
                 <h3 class="text-center font-bold"><span class="hilight-1">Start-Up Opportunity Orbit:</span> Innovators’ Launchpad</h3>
@@ -441,9 +398,11 @@ get_header();
                     </div>
                 </div>
             </div>
-
         </div>
-        <!-- Section - 8 -->
+    </section>
+    
+    <!-- Section - 8 -->
+    <section class="empowering_mind section">
         <div class="container my-5">
             <div class="row gy-4">
                 <h3 class="text-center">Your Path to Empowering Mind, Body & Spirit</h3>
@@ -471,9 +430,11 @@ get_header();
                     <img src="https://sample-files.com/downloads/images/jpg/landscape_hires_4000x2667_6.83mb.jpg" class="img-fluid rounded-4" alt="">
                 </div>
             </div>
-
         </div>
-        <!-- Section - 9 -->
+    </section>
+    
+    <!-- Section - 9 -->
+    <section class="photo_gallery section">
         <div class="container my-5">
             <div class="row gy-4">
                 <div class="col-lg-6 position-relative align-self-start aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
@@ -502,9 +463,7 @@ get_header();
                     </p>
                 </div>
             </div>
-
         </div>
-
     </section>
 
 </main>

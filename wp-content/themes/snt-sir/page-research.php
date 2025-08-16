@@ -4,8 +4,55 @@ Template Name: Research Page
 */
 get_header();
 ?>
-<main class="main">
+<?php
+function render_research_accordion($publications, $accordionIdPrefix)
+{
+    if (empty($publications)) {
+        echo '<p class="text-muted">No publications available in this category.</p>';
+        return;
+    }
 
+    echo '<div class="accordion" id="' . esc_attr($accordionIdPrefix) . 'Accordion">';
+
+    foreach ($publications as $index => $pub) {
+        $collapseId = $accordionIdPrefix . 'Collapse' . ($index + 1);
+        $headingId = $accordionIdPrefix . 'Heading' . ($index + 1);
+        $isFirst = $index === 0;
+?>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="<?php echo esc_attr($headingId); ?>">
+                <button class="accordion-button <?php echo !$isFirst ? 'collapsed' : ''; ?>" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#<?php echo esc_attr($collapseId); ?>"
+                    aria-expanded="<?php echo $isFirst ? 'true' : 'false'; ?>"
+                    aria-controls="<?php echo esc_attr($collapseId); ?>">
+                    <?php echo esc_html($pub->title); ?>
+                </button>
+            </h2>
+            <div id="<?php echo esc_attr($collapseId); ?>" class="accordion-collapse collapse <?php echo $isFirst ? 'show' : ''; ?>"
+                aria-labelledby="<?php echo esc_attr($headingId); ?>"
+                data-bs-parent="#<?php echo esc_attr($accordionIdPrefix); ?>Accordion">
+                <div class="accordion-body">
+                    <?php echo esc_html($pub->authors); ?><br>
+                    <em><?php echo esc_html($pub->journal); ?></em><br>
+                    <span><?php echo esc_html($pub->details); ?></span><br>
+                    <?php if (!empty($pub->doi_link) && !empty($pub->doi)): ?>
+                        DOI: <a href="<?php echo esc_url($pub->doi_link); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html($pub->doi); ?></a><br>
+                    <?php endif; ?>
+                    <?php if (!empty($pub->indexing)): ?>
+                        <strong>Indexing:</strong> <?php echo esc_html($pub->indexing); ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+<?php
+    }
+
+    echo '</div>';
+}
+?>
+
+<main class="main">
 
     <!-- Starter Section Section -->
     <section id="starter-section" class="starter-section section position-relative">
@@ -29,15 +76,351 @@ get_header();
         </div><!-- End Page Title -->
     </section><!-- /Starter Section Section -->
 
-    <!-- Body Content Section -->
+    <!-- Carousel Slider Section -->
+    <section class="hero__v6 section" id="home">
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <?php
+                $slider_data = get_slider_data(); // Fetch slider data
+
+                // Loop through each slide and display it
+                $active = true; // Set first slide as active
+                foreach ($slider_data as $slide) {
+                    $image = $slide['image'];
+                    $title = $slide['title'];
+                    $description = $slide['description'];
+                    $button_name = $slide['button_name'];
+                    $button_link = $slide['button_link'];
+
+                    // Check if the button name or link is available, else set default values
+                    $button_name = !empty($button_name) ? $button_name : 'Learn More';
+                    $button_link = !empty($button_link) ? $button_link : '#';
+                ?>
+                    <div class="carousel-item <?php echo $active ? 'active' : ''; ?>">
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <div class="col-lg-8">
+                                    <div class="hero-img">
+                                        <img class="img-main w-100 rounded-4" src="<?php echo esc_url($image); ?>" alt="Hero Image" data-aos="fade-in" data-aos-delay="500">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 mb-4 mb-lg-0">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <h3 class="hero-title mb-3" data-aos="fade-up" data-aos-delay="100"><?php echo esc_html($title); ?></h3>
+                                            <p class="hero-description mb-4 mb-lg-5 text-justify" data-aos="fade-up" data-aos-delay="200"><?php echo esc_html($description); ?></p>
+                                            <div class="cta d-flex gap-2 mb-4 mb-lg-5" data-aos="fade-up" data-aos-delay="300">
+                                                <a class="btn btn-white-outline" href="<?php echo esc_url($button_link); ?>"><?php echo esc_html($button_name); ?>
+                                                    <svg class="lucide lucide-arrow-up-right" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M7 7h10v10"></path>
+                                                        <path d="M7 17 17 7"></path>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php
+                    $active = false; // Set all subsequent slides to not active
+                }
+                ?>
+            </div>
+
+            <!-- Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Section - 1 / Research Publication -->
+    <section id="about" class="about section">
+        <div class="container my-5">
+            <h3 class="text-center">Research Publication</h3>
+            <p class="text-center">
+                Advancing Knowledge, Pioneering Ideas, Inspiring Innovation, Published for the World
+                Research Publications
+            </p>
+            <div class="row gy-4">
+                <div class="col-lg-6 position-relative align-self-start aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/section/section_research_publication.png" class="w-100 rounded-4" style="height: 360px" alt="Research Publication">
+                </div>
+                <div class="col-lg-6 content aos-init aos-animate align-content-center" data-aos="fade-up" data-aos-delay="200">
+                    <p class="text-justify">
+                        Showcasing peer-reviewed articles and conference papers that contribute to advancing knowledge in cutting-edge domains such as Artificial Intelligence, Federated Learning, XAI, Counterfactual Explanation, and Digital Health. These works reflect a commitment to impactful research, innovation, and collaboration with global academic and industry partners.
+                    </p>
+                    <div class="text-center my-3">
+                        <button class="btn btn-primary bg-gradient"><a href="<?php echo home_url('/research-publication'); ?>" class="text-light">Dive Deeper into the Full Insights</a><i class="fa fa-long-arrow-right text-light px-2" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section - 2 / Book Chapters -->
+    <section class="project section" style="background: #ffe5e5;">
+        <div class="container my-5">
+            <div class="row gy-4">
+                <h3 class="text-center font-bold">Book Chapters</h3>
+                <p class="text-center">
+                    Writing the Future of Innovation, Collaborating for Intellectual Impact, Shaping Ideas into Authoritative References
+                </p>
+                <div class="col-lg-6 content aos-init aos-animate align-content-center" data-aos="fade-up" data-aos-delay="200">
+                    <p>
+                        Contributions to edited volumes published by leading international publishers, presenting specialized insights in emerging technologies, data science, and AI applications. These chapters serve as authoritative references, bridging theory with practice and enriching the global body of scholarly literature.
+                    </p>
+                    <div class="text-center my-3">
+                        <button class="btn btn-success bg-gradient"><a href="<?php echo home_url('/book-chapter'); ?>" class="text-light">Dive Deeper into the Full Insights</a><i class="fa fa-long-arrow-right text-light px-2" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div class="col-lg-6 position-relative align-self-start aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/section/section_book_chapter.png" class="img-fluid rounded-4" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section - 3 -->
+    <section class="academic section" style="background: #def4fd;">
+        <div class="container my-5">
+            <div class="row gy-4">
+                <h3 class="text-center font-bold">Research Guidance</h3>
+                <p class="fst-italic text-center">
+                    Mentoring Minds, Creating Innovators
+                    Nurturing Talent for Academic Excellence
+                    Shaping the Researchers of Tomorrow
+                </p>
+                <div class="col-lg-6 position-relative align-self-start aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/section/section_research_guidence.png" class="img-fluid rounded-4" alt="">
+                </div>
+                <div class="col-lg-6 content aos-init aos-animate align-content-center" data-aos="fade-up" data-aos-delay="200">
+                    <p>
+                        Mentoring doctoral and postgraduate scholars through innovative research projects. Providing academic supervision, technical expertise, and strategic direction to ensure high-quality outcomes, publication-ready results, and solutions with societal impact.
+                    </p>
+                    <div class="text-center my-3">
+                        <button class="btn btn-primary bg-gradient"><a href="<?php echo home_url('/research-guidance'); ?>" class="text-light">Dive Deeper into the Full Insights</a><i class="fa fa-long-arrow-right text-light px-2" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section - 4 -->
+    <section class="health-wellness section" style="background: #f0e9d0;">
+        <div class="container my-5">
+            <div class="row gy-4">
+                <h3 class="text-center font-bold">
+                    Peer Reviewer
+                </h3>
+                <p class="fst-italic text-center">
+                    Guardian of Research Quality | Advancing Knowledge Through Rigorous Review | Upholding the Standards of Science | Trusted Voice in Scholarly Evaluation | Strengthening the Academic Community
+                </p>
+                <div class="col-lg-6 content aos-init aos-animate align-content-center" data-aos="fade-up" data-aos-delay="200">
+                    <p>
+                        Serving as a trusted evaluator for national and international journals and conferences. Ensuring research integrity by assessing originality, methodology, and significance, thereby upholding academic standards and contributing to the advancement of scientific knowledge.
+                    </p>
+                    <div class="text-center my-3">
+                        <button class="btn btn-success bg-gradient"><a href="#" class="text-light">Dive Deeper into the Full Insights</a><i class="fa fa-long-arrow-right text-light px-2" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div class="col-lg-6 position-relative align-self-start aos-init aos-animate text-center" data-aos="fade-up" data-aos-delay="100">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/section/section_peer_review.png" class="img-fluid rounded-4" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section - 5 -->
+    <section class="research_interests section">
+        <div class="container py-5 text-center">
+            <h2 class="fw-bold"><span class="category-title">Research </span> Interests</h2>
+            <p class="text-muted mb-5 px-md-5">
+                Specializing in advanced domains including <strong>Artificial Intelligence</strong>, <strong>Big Data Analytics</strong>, <strong>Cloud Computing</strong>, <strong>Digital Twins</strong>, <strong>Explainable AI</strong>, and <strong>IoT</strong>. Integrating research expertise into teaching to inspire innovation, critical thinking, and problem-solving among students.
+            </p>
+            <div class="row">
+                <div class="col-12 col-md-4 category-card">
+                    <div class="category-box">
+                        <img src="<?php echo get_template_directory_uri() ?>/assets/img/research/Digital Health.png" alt="Digital Health" class="category-img">
+                        <div class="category-text">Digital Health</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 category-card">
+                    <div class="category-box">
+                        <img src="<?php echo get_template_directory_uri() ?>/assets/img/research/Data Governance.png" alt="Data Governance" class="category-img">
+                        <div class="category-text">Data Governance</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 category-card">
+                    <div class="category-box">
+                        <img src="<?php echo get_template_directory_uri() ?>/assets/img/research/Big Data Analytics.png" alt="Big Data Analytics" class="category-img">
+                        <div class="category-text">Big Data Analytics</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 category-card">
+                    <div class="category-box">
+                        <img src="<?php echo get_template_directory_uri() ?>/assets/img/research/Explainable AI(XAI).png" alt="Explainable AI" class="category-img">
+                        <div class="category-text">Explainable AI (XAI)</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 category-card">
+                    <div class="category-box">
+                        <img src="<?php echo get_template_directory_uri() ?>/assets/img/research/Federated Learning.png" alt="Federated Learning" class="category-img">
+                        <div class="category-text">Federated Learning</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 category-card">
+                    <div class="category-box">
+                        <img src="<?php echo get_template_directory_uri() ?>/assets/img/research/Internet of Things.png" alt="Internet of Things" class="category-img">
+                        <div class="category-text">Internet of Things</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 category-card">
+                    <div class="category-box">
+                        <img src="<?php echo get_template_directory_uri() ?>/assets/img/research/Counterfactual Explanation.png" alt="Counterfactual Explanation" class="category-img">
+                        <div class="category-text">Counterfactual Explanation</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 category-card">
+                    <div class="category-box">
+                        <img src="<?php echo get_template_directory_uri() ?>/assets/img/research/Causal AI.png" alt="Causal AI" class="category-img">
+                        <div class="category-text">Causal AI</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 category-card">
+                    <div class="category-box">
+                        <img src="<?php echo get_template_directory_uri() ?>/assets/img/research/Digital Twins Technology.png" alt="Digital Twins Technology" class="category-img">
+                        <div class="category-text">Digital Twins Technology</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Section - Professional Membership  -->
+    <section id="service-details" class="service-details section">
+        <div class="container">
+            <h4 class="text-center">Professional Membership</h4>
+            <p class="text-muted mb-3 px-md-5">
+                Associated with Distinguished Academic & Research Networks | Strengthening Academia through Professional Membership and Collaboration | Global Collaboration and Local Transformation | Part of Prestigious Academic Networks
+            </p>
+            <div class="row gy-5">
+                <div class="col-lg-5 position-relative align-self-start aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                    <img src="<?php echo get_template_directory_uri() ?>/assets/img/section/section_professional_membership.png" class="img-fluid rounded-4" alt="Professional Membership">
+                </div>
+                <div class="col-lg-7 content aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                    <p class="text-muted">Active member of prestigious academic and professional societies such as the Computer Society of India and the International Association of Engineers. These memberships foster collaboration, professional growth, and contribution to global knowledge networks.
+                    </p>
+
+                    <div class="accordion" id="intJournalAccordion">
+                        <!-- Publication 1 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="intHeading1">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse1">
+                                    OITS - Orissa Information Technology Society
+                                </button>
+                            </h2>
+                            <div id="intCollapse1" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
+                                <div class="accordion-body">
+                                    Life Member of Orissa Information Technology Society (OITS) since 1999.
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Publication 2 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="intHeading2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse2">
+                                    CSI - Computer Society of India
+                                </button>
+                            </h2>
+                            <div id="intCollapse2" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
+                                <div class="accordion-body">
+                                    Life Member of Computer Society of India (CSI) since 2015
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Publication 3 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="intHeading3">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse3">
+                                    AIENG - International Association of Engineers
+                                </button>
+                            </h2>
+                            <div id="intCollapse3" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
+                                <div class="accordion-body">
+                                    Member of the International Association of Engineers (AIENG) since 2016
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Section - 5 -->
+    <section class="blog section">
+        <div class="container my-5">
+            <div class="row gy-4">
+                <h3 class="text-center font-bold">
+                    Participation in Seminars, Conferences & Workshops
+                </h3>
+                <p class="text-muted text-center">
+                    Learning, Sharing, Leading: A Lifelong Commitment to Learning
+                    Engaging with the Academic World, Where Ideas Converge From Attendee to Influencer
+                </p>
+                <div class="col-lg-6 position-relative align-self-start aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                    <img src="<?php echo get_template_directory_uri() ?>/assets/img/section/section_participation_seminar.png" class="img-fluid rounded-4" alt="">
+                </div>
+                <div class="col-lg-6 content aos-init aos-animate align-content-center" data-aos="fade-up" data-aos-delay="200">
+                    <p class="text-muted">
+                        Engaging in national and international academic events as a participant, presenter, and resource person. These platforms provide opportunities for knowledge exchange, networking, and staying updated on the latest research and technological advancements.
+                    </p>
+                    <div class="text-center my-3">
+                        <button class="btn btn-primary bg-gradient"><a href="<?php echo home_url('/seminar-conference')?>" class="text-light">Dive Deeper into the Full Insights</a><i class="fa fa-long-arrow-right text-light px-2" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- Section - 1 / Research Publication -->
     <section id="about" class="about section">
         <div class="container my-5">
             <div class="row gy-4">
-                <div class="col-lg-8 position-relative align-self-start aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                <div class="col-lg-6 position-relative align-self-start aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
                     <img src="https://camo.githubusercontent.com/c2fd2f94aa55544327fc8ed8901aedb2eec8e3535243452b43646eb8086efe1a/68747470733a2f2f796176757a63656c696b65722e6769746875622e696f2f73616d706c652d696d616765732f696d6167652d34342e6a7067" class="w-100 rounded-4" style="height: 360px" alt="">
                 </div>
-                <div class="col-lg-4 content aos-init aos-animate align-content-center" data-aos="fade-up" data-aos-delay="200">
+                <div class="col-lg-6 content aos-init aos-animate align-content-center" data-aos="fade-up" data-aos-delay="200">
                     <h3>Research Publication</h3>
                     <p class="fst-italic text-justify">
                         The research journey reflects a commitment to innovation, discovery, and academic excellence. Below is a categorized list of peer-reviewed publications, highlighting contributions to international journals, national journals, and other scholarly works. Click on each section to explore the detailed list of publications.
@@ -47,895 +430,61 @@ get_header();
         </div>
         <section id="service-details" class="service-details section">
             <div class="container">
+                <!-- Complete Accordion Setup -->
+                <?php
+                $researches = get_researches();
+                $keys = array_keys($researches);
+                ?>
+
                 <div class="row gy-5">
-                    <div class="col-lg-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                    <!-- Sidebar Tabs -->
+                    <div class="col-lg-3" data-aos="fade-up" data-aos-delay="100">
                         <div class="service-box">
                             <h4>Research List</h4>
                             <div class="services-list">
                                 <div class="nav flex-column nav-pills mb-3" id="pubTab" role="tablist" aria-orientation="vertical">
-                                    <button class="nav-link text-start text-decoration-none py-4 active" id="int-journal-tab" data-bs-toggle="pill" data-bs-target="#int-journal" type="button" role="tab" aria-controls="int-journal" aria-selected="true">
-                                        <i class="bi bi-chevron-right"></i>International Journal
-                                    </button>
-                                    <hr class="my-2 text-muted">
-                                    <button class="nav-link text-start text-decoration-none py-4" id="int-conf-tab" data-bs-toggle="pill" data-bs-target="#int-conf" type="button" role="tab" aria-controls="int-conf" aria-selected="false">
-                                        <i class="bi bi-chevron-right"></i>International Conference Proceeding
-                                    </button>
-                                    <hr class="my-2 text-muted">
-                                    <button class="nav-link text-start text-decoration-none py-4" id="nat-conf-proceed-tab" data-bs-toggle="pill" data-bs-target="#nat-conf-proceed" type="button" role="tab" aria-controls="nat-conf-proceed" aria-selected="false">
-                                        <i class="bi bi-chevron-right"></i>National Conference Proceeding
-                                    </button>
-                                    <hr class="my-2 text-muted">
-                                    <button class="nav-link text-start text-decoration-none py-4" id="nat-journal-tab" data-bs-toggle="pill" data-bs-target="#nat-journal" type="button" role="tab" aria-controls="nat-journal" aria-selected="false">
-                                        <i class="bi bi-chevron-right"></i>National Journal
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div><!-- End Services List -->
-                    </div>
-
-                    <div class="col-lg-9 ps-lg-5 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
-                        <div class="tab-content" id="pubTabContent">
-                            <!-- International Journal Tab -->
-                            <div class="tab-pane fade show active" id="int-journal" role="tabpanel" aria-labelledby="int-journal-tab">
-                                <div class="mb-4">
-                                    <h4 class="fw-bold">International Journal Publications</h4>
-                                    <p class="text-muted">
-                                        Below is a collection of peer-reviewed research articles published in international journals, encompassing advanced topics such as IoT-driven health monitoring, Android malware detection, quantum computing applications, and data mining for cybersecurity — demonstrating significant contributions to global scientific research.
-                                    </p>
-                                </div>
-
-                                <div class="accordion" id="intJournalAccordion">
-
-                                    <!-- Publication 1 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading1">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse1">
-                                                IoT Driven Smart Health Monitoring for Heart Disease Prediction Using Quantum Kernel Enhanced Sardine Diffusion and CNN
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse1" class="accordion-collapse collapse show" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Dibas Kumar Hembram, Satya Narayan Tripathy, CH Narsimha Reddy, Debabrata Dansana, Quadri Noorulhasan Naveed, Shafat Khan, Mohammed Kareemullah, and Addisu Frinjo Emma<br>
-                                                <em>Scientific Reports</em>, ISSN: 2045-2322, Volume 15, Article number: 17306, 2025; DOI: <a href="https://doi.org/10.1038/s41598-025-99990-x" target="_blank" rel="noopener noreferrer">10.1038/s41598-025-99990-x</a>. (SCI)
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 2 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading2">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse2">
-                                                PSO-Optimized Deep Learning Framework for Android Malware Classification
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse2" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Diptimayee Sahu, Satya Narayan Tripathy<br>
-                                                <em>International Journal on Information Technologies and Security, Journal of The Institution of Engineers (India): Series B (IEIB)</em>, 2025.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 3 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading3">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse3">
-                                                Strengthening Android Malware Detection: from Machine Learning to Deep Learning
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse3" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Diptimayee Sahu, Satya Narayan Tripathy, and Sisira Kumar Kapat<br>
-                                                <em>International Journal of Computing and Digital Systems</em>, e-ISSN: 2210-142X, Volume 17, No. 1, pp. 1-11, 2025; DOI: <a href="http://dx.doi.org/10.12785/ijcds/1571000835" target="_blank" rel="noopener noreferrer">10.12785/ijcds/1571000835</a>. (Scopus)
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 4 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading4">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse4">
-                                                A Comprehensive Exploration and Interpretability of Android Malware with Explainable Deep Learning Techniques
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse4" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Diptimayee Sahu and Satya Narayan Tripathy<br>
-                                                <em>International Journal on Information Technologies and Security</em>, ISSN-No: 1313-8251, No. 4 (Volume 16), 2024, pp. 117–128; DOI: <a href="https://doi.org/10.59035/DOVZ3535" target="_blank" rel="noopener noreferrer">10.59035/DOVZ3535</a>. (ESCI)
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 5 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading5">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse5">
-                                                An Opcode based Malware Detection Model using Supervised Learning algorithms
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse5" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Om Prakash Samantray, Satya Narayan Tripathy<br>
-                                                <em>International Journal of Information Security and Privacy (IJISP), IGI Global</em>, ISSN: 1930-1650, Volume 15, Issue 4, 2021; DOI: <a href="https://doi.org/10.4018/IJISP.2021100102" target="_blank" rel="noopener noreferrer">10.4018/IJISP.2021100102</a>. (Scopus & ESCI)
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 6 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading6">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse6">
-                                                Detection of Anomalous In-Memory Process based on DLL Sequence
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse6" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Binayak Panda, Satya Narayan Tripathy<br>
-                                                <em>International Journal of Advanced Computer Science and Applications (IJACSA)</em>, Volume 11 Issue 10, 2020; ISSN: 2158-107X (Print), 2156-5570 (Online), pp. 185–194. (Web of Science, ESCI, SCOPUS)<br>
-                                                <a href="http://dx.doi.org/10.14569/IJACSA.2020.0111025" target="_blank" rel="noopener noreferrer">Paper Link</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 7 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading7">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse7">
-                                                A Knowledge-Domain Analyser for Malware Classification
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse7" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Om Prakash Samantray, Satya Narayan Tripathy<br>
-                                                IEEE International Conference on Computer Science, Engineering and Applications (ICCSEA)-2020, ISBN: 978-1-7281-5830-3, pp. 1-7; DOI: 10.1109/ICCSEA49143.2020.9132916 (Scopus)<br>
-                                                <a href="https://ieeexplore.ieee.org/document/9132916/figures#figures" target="_blank" rel="noopener noreferrer">Paper Link</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 8 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading8">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse8">
-                                                Analysis of Statements of Software Based on the Prioritization Strategy of Test Cases
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse8" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Sasmita Padhy, Satya Narayan Tripathy, Sisira Kumar Kapat, Susanta Kumar Das<br>
-                                                <em>International Journal of Innovative Technology and Exploring Engineering (IJITEE)</em>, ISSN: 2278-3075, Volume 9, Issue 5, March 2020, pp. 618-621; DOI: 10.35940/ijitee.E2479.039520 (Scopus)
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 9 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading9">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse9">
-                                                An Optimal Receive Antenna Selection Algorithm using GA in MIMO Communication System
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse9" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Sasmita Padhy, Satya Narayan Tripathy, Sisira Kumar Kapat, Susanta Kumar Das<br>
-                                                <em>International Journal of Innovative Technology and Exploring Engineering (IJITEE)</em>, ISSN: 2278-3075, Volume 9, Issue 5, March 2020, pp. 630-633; DOI: 10.35940/ijitee.E2502.039520 (Scopus)
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 10 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading10">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse10">
-                                                Classification of Spyware Affected files using Data Mining Techniques
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse10" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                D Anil Kumar, Sisira Kumar Kapat, Susanta Kumar Das, Satya Narayan Tripathy<br>
-                                                <em>International Journal of Recent Technology and Engineering (IJRTE)</em>, ISSN: 2277-3878, Volume 8 Issue 2S6, July 2019, pp. 462-466 (Scopus)
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 11 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading11">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse11">
-                                                A Data Mining Based Malware Detection Model using Distinct API Call Sequences
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse11" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Om Prakash Samantray, Satya Narayana Tripathy, Susant Kumar Das<br>
-                                                <em>International Journal of Innovative Technology and Exploring Engineering (IJITEE)</em>, ISSN: 2278-3075, Volume 8 Issue 7, May 2019, pp. 896-902 (Scopus)<br>
-                                                <a href="https://www.ijitee.org/wp-content/uploads/papers/v8i7/F3533048619.pdf" target="_blank" rel="noopener noreferrer">Paper Link</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 12 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading12">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse12">
-                                                A study to Understand Malware Behavior through Malware Analysis
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse12" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Om Prakash Samantray, Satya Narayana Tripathy, Susant Kumar Das<br>
-                                                IEEE International Conference on System, Computation, Automation and Networking (ICSCAN), Pondicherry, India - 2019, pp. 1-5; DOI: 10.1109/ICSCAN.2019.8878680 (Scopus)<br>
-                                                <a href="https://ieeexplore.ieee.org/document/8878680" target="_blank" rel="noopener noreferrer">Paper Link</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 13 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading13">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse13">
-                                                A Theoretical Feature-wise Study of Malware Detection Techniques
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse13" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Om Prakash Samantray, Satya Narayana Tripathy, Susant Kumar Das<br>
-                                                <em>International Journal of Computer Sciences and Engineering (Open Access)</em>, E-ISSN: 2347-2693, Vol.-6, Issue-12, Dec 2018; pp. 879-887.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 14 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading14">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse14">
-                                                Morphological Malware Detection: An API Sequence Mining With LCS Based Voting Algorithm
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse14" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Binayak Panda, Satya Narayan Tripathy<br>
-                                                <em>Journal of Advance Research in Dynamical & Control Systems</em>, Vol. 10, Special Issue. 06, pp. 625-633, 2018, ISSN: 1943-023X, (SCOPUS, UGC Approved Journal Sl. No. 26301).
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 15 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading15">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse15">
-                                                Malware Architectural View with Performance Analysis in Network at its Activation State
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse15" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Sisira Kumar Kapat, Satya Narayan Tripathy<br>
-                                                <em>International Conference on Cognitive Informatics & Soft Computing (CISC-2017)</em>, eBook ISBN 978-981-13-0617-4, Series ISSN 2194-5357. Scopus.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 16 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading16">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse16">
-                                                A Comprehensive Study of Malware Propagation using Geometric Progression
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse16" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Satya Narayan Tripathy, Sisira Kumar Kapat, Raghunath Patro, Susanta Kumar Das<br>
-                                                <em>International Conference on Computational Intelligence and Networks</em>, Accession Number: WOS:000428641100014, ISBN:978-1-5386-2529-3, DOI 10.1109/CINE.2017.31, Pages: 73-77, IEEE. Scopus, Web of Science.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 17 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading17">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse17">
-                                                Static Malware Analysis: A Case Study
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse17" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Satya Narayan Tripathy, Sisira Kumar Kapat, M. Soujanya, Susanta Kumar Das<br>
-                                                <em>International Journal of Scientific Research in Computer Science, Engineering and Information Technology (IJSRCSEIT)</em>, ISSN : 2456-3307, Volume 2, Issue 7, UGC Journal no:64718, pp.135-141, September 2017.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 18 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading18">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse18">
-                                                A Spyware Detection System with a Comparative Study of Spywares using Classification Rule Mining
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse18" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Satya Narayan Tripathy, Sisira Kumar Kapat, Susanta Kumar Das, Binayak Panda<br>
-                                                <em>International Journal of Scientific & Engineering Research</em>, ISSN 2229-5518, Volume 7, Issue 3, March 2016; pp. 179-184; (UGC Approved Journal Sl. No. 44919).
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 19 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading19">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse19">
-                                                A Comparative Study on Serial and Parallel Web Content Mining
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse19" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Binayak Panda, Dr. Satya Narayan Tripathy, Dr. Nilambar Sethi, Om Prakash Samantray<br>
-                                                <em>International Journal of Advanced Networking and Applications</em>, ISSN: 0975-0282, EISSN: 0975-0290, Volume 7, Issue 5, 2016; pp. 2882-2886; (UGC Approved Journal Sl. No. 62587).
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 20 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading20">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse20">
-                                                CAM: A Combined Analytical Model for Efficient Malware Classification
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse20" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Om Prakash Samantray, Satya Narayan Tripathy, Susant Kumar Das, Binayak Panda<br>
-                                                <em>International Journal of Advanced Research in Computer and Communication Engineering</em>, ISSN (Online) 2278-1021, ISSN (Print) 2319-5940, Vol. 5, Issue 1, January 2016; pp. 286-290; DOI 10.17148/IJARCCE.2016.5171.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 21 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading21">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse21">
-                                                A Study on Malware Taxonomy and Malware Detection Techniques
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse21" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Satya Narayan Tripathy, Susanta Kumar Das, Brojo Kishore Mishra, Om Prakash Samantray<br>
-                                                <em>International Journal of Engineering Research & Technology</em>, ISSN (print): 2278-0181, TITCON-2015 Conference Proceedings; pp. 266 – 273.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 22 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading22">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse22">
-                                                A Review on Vulnerability Management in Wireless Communication System
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse22" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                S. N. Tripathy, T. Mohan Rao<br>
-                                                <em>International Journal of Advanced Computer Research</em>, ISSN (print): 2249-7277, March 2013, pp. 71-75.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 23 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading23">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse23">
-                                                A Survey on Vulnerability Management for Web Security
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse23" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Debendra Dhinda, S. N. Tripathy, Nikunja Kishore Sabat<br>
-                                                <em>International Journal of Advanced Computer Research</em>, ISSN (print): 2249-7277, March 2013, pp. 92-94.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 24 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading24">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse24">
-                                                Policy based Network Administration and Management
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse24" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                Susanta Kumar Das, Jagadish Panda, Satya Narayan Tripathy<br>
-                                                <em>IJCSNS International Journal of Computer Science and Network Security</em>, Vol.9 No.10, November 2012, pp. 121-130.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 25 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="intHeading25">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#intCollapse25">
-                                                Designing A Trust Model for an Ad Hoc Social Network using Communication Data Value
-                                            </button>
-                                        </h2>
-                                        <div id="intCollapse25" class="accordion-collapse collapse" data-bs-parent="#intJournalAccordion">
-                                            <div class="accordion-body">
-                                                S. N. Tripathy, S. K. Tripathy, S. K. Das<br>
-                                                <em>International Journal of Computer Science & Management Systems</em>, ISSN: 0975-5349, Vol.1(2), December 2009, pp. 85-89.
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-
-                            </div>
-
-                            <!-- International Conference Tab -->
-                            <div class="tab-pane fade" id="int-conf" role="tabpanel" aria-labelledby="int-conf-tab">
-                                <div class="mb-4">
-                                    <h4 class="fw-bold">International Conference Proceedings</h4>
-                                    <p class="text-muted">
-                                        Below is a curated list of research publications presented at prominent international conferences and symposiums. These contributions span deep learning, cybersecurity, healthcare informatics, Android malware detection, and explainable AI, published in reputed proceedings like Springer, IEEE, and Taylor & Francis.
-                                    </p>
-                                </div>
-                                <div class="accordion" id="intConfAccordion">
-
-                                    <!-- Publication 1 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading1">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse1">
-                                                Lung Cancer Prognosis using Deep Learning
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse1" class="accordion-collapse collapse show" data-bs-parent="#intConfAccordion">
-                                            <div class="accordion-body">
-                                                Pragnya Das, Satya Narayan Tripathy<br>
-                                                <em>World Congress on Smart Computing (WCSC2024)</em>, April 2025, pp.147–155.<br>
-                                                DOI: 10.1007/978-981-97-9006-7_13
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 2 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading2">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse2">
-                                                Advancing Android Malware Detection: CNN-Based Image Analysis Framework
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse2" class="accordion-collapse collapse" data-bs-parent="#intConfAccordion">
-                                            <div class="accordion-body">
-                                                Diptimayee Sahu, Satya Narayan Tripathy<br>
-                                                <em>ICIDA 2024</em>, Lecture Notes in Networks and Systems, Volume 1408, 2024. ISBN: 978-981-96-6296-8
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 3 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading3">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse3">
-                                                Class-Balanced Ensembled Framework for Android Malware Detection
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse3" class="accordion-collapse collapse" data-bs-parent="#intConfAccordion">
-                                            <div class="accordion-body">
-                                                Diptimayee Sahu, Satya Narayan Tripathy, Soujanya Morty<br>
-                                                <em>Smart Innovation, Systems and Technologies</em>, Springer Book Series, 2024.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 4 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading4">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse4">
-                                                Enhancing Transparency in Android Malware Detection Using Explainable SHAP-LIME Deep Learning Technique
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse4" class="accordion-collapse collapse" data-bs-parent="#intConfAccordion">
-                                            <div class="accordion-body">
-                                                Diptimayee Sahu, Satya Narayan Tripathy, Soujanya Morty<br>
-                                                <em>Studies in Smart Technologies</em>, Springer Book Series, 2024.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 5 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading5">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse5">
-                                                A Deep Learning Approach for Android Malware Detection over Large Feature-set
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse5" class="accordion-collapse collapse" data-bs-parent="#intConfAccordion">
-                                            <div class="accordion-body">
-                                                Diptimayee Sahu, Satya Narayan Tripathy, Sisira Kumar Kapat, Soujanya Morty<br>
-                                                <em>IEEE AIC 2023 - World Conference on Applied Intelligence and Computing</em>.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 6 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading6">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse6">
-                                                A Comparative Analysis of Android Malware Detection Using Deep Learning
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse6" class="accordion-collapse collapse" data-bs-parent="#intConfAccordion">
-                                            <div class="accordion-body">
-                                                Sahu, D., Tripathy, S.N., Kapat, S.K.<br>
-                                                <em>ICAIoT 2023 – Communications in Computer and Information Science, vol 1929</em>, Springer, Cham.<br>
-                                                <a href="https://doi.org/10.1007/978-3-031-48774-3_7" target="_blank">Read Paper</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 7 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading7">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse7">
-                                                A Deep Learning-Based Framework for Android Malware Family Classification
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse7" class="accordion-collapse collapse" data-bs-parent="#intConfAccordion">
-                                            <div class="accordion-body">
-                                                Sahu, D., Tripathy, S.N., Kapat, S.K.<br>
-                                                <em>ICDSA 2023 – Lecture Notes in Networks and Systems, vol 821</em>, Springer, Singapore.<br>
-                                                <a href="https://doi.org/10.1007/978-981-99-7814-4_27" target="_blank">Read Paper</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 8 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading8">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse8">
-                                                Antral Gastritis Preliminary Diagnosis by Endoscopic Image Analysis using Deep Learning Approach
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse8" class="accordion-collapse collapse" data-bs-parent="#intConfAccordion">
-                                            <div class="accordion-body">
-                                                Lalit Kumar Behera, Satya Narayan Tripathy<br>
-                                                <em>ICCTCCI-2024</em>, ISBN: 978-81-966964-1-2 (Scopus, Taylor & Francis)
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 9 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading9">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse9">
-                                                Explainable Artificial Intelligence in Designing a Sustainable E-healthcare System
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse9" class="accordion-collapse collapse" data-bs-parent="#intConfAccordion">
-                                            <div class="accordion-body">
-                                                Lalit Kumar Behera, Satya Narayan Tripathy<br>
-                                                <em>AIoT4S-2024</em>, ISBN: 978-93-6013-262-0
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 10 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading10">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse10">
-                                                Host Specific Outlier Detection Using Process Relation Semantics with Graph Mining
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse10" class="accordion-collapse collapse" data-bs-parent="#intConfAccordion">
-                                            <div class="accordion-body">
-                                                Binayak Panda, Satya Narayan Tripathy<br>
-                                                <em>ICDSM-2021 – LNDECT, Volume 86</em>, Springer, Feb 2022.<br>
-                                                DOI: 10.1007/978-981-16-5685-9_44<br>
-                                                <a href="https://doi.org/10.1007/978-981-16-5685-9_44" target="_blank">Read Paper</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 11 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading11">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse11">
-                                                A Study to Understand Malware Behavior through Malware Analysis
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse11" class="accordion-collapse collapse" data-bs-parent="#intConfAccordion">
-                                            <div class="accordion-body">
-                                                Om Prakash Samantray, Satya Narayana Tripathy, Susant Kumar Das<br>
-                                                <em>International Conference on Systems Computation Automation and Networking</em>, IEEE, 2019.<br>
-                                                ISBN: 978-1-7281-1524-5
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 12 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading12">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse12">
-                                                A Survey on Malware Detection Approaches Using EULA Analysis with Text Mining
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse12" class="accordion-collapse collapse" data-bs-parent="#intConfAccordion">
-                                            <div class="accordion-body">
-                                                Satya Narayan Tripathy, Sisira Kumar Kapat, D Anil Kumar, Mamata Nayak, Susanta Kumar Das<br>
-                                                <em>ICDSBA 2018</em>, DOI: 10.1109/ICDSBA.2018.00102<br>
-                                                Accession Number: WOS: 000468955000095<br>
-                                                ISBN: 978-1-5386-8431-3, Pages: 517–522
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <!-- National Conference Proceeding Tab -->
-                            <div class="tab-pane fade" id="nat-conf-proceed" role="tabpanel" aria-labelledby="nat-conf-proceed-tab">
-                                <div class="mb-4">
-                                    <h4 class="fw-bold">National Conference Proceedings</h4>
-                                    <p class="text-muted">
-                                        This section showcases research papers presented at various esteemed national conferences and seminars. These contributions reflect innovations in cybersecurity, malware detection, trust models in social networks, and advancements in IT for national development.
-                                    </p>
-                                </div>
-
-                                <div class="accordion" id="natConfAccordion">
-
-                                    <!-- Entry 1 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading1">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse1">
-                                                Two Phase Malware Detection using API and Static System Event Properties
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse1" class="accordion-collapse collapse show" data-bs-parent="#natConfAccordion">
-                                            <div class="accordion-body">
-                                                Sisira Kumar Kapat, Satya Narayan Tripathy, Susanta Kumar Das<br>
-                                                In <em>NSIAIT-2019</em>, Berhampur University, Odisha, India<br>
-                                                15th–16th March 2019
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Entry 2 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading2">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse2">
-                                                A System-centric Malware Detection Framework based on System’s Behavior
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse2" class="accordion-collapse collapse" data-bs-parent="#natConfAccordion">
-                                            <div class="accordion-body">
-                                                Om Prakash Samantray, Satya Narayan Tripathy, Susanta Kumar Das, Sisira Kumar Kapat<br>
-                                                In <em>NSIAIT-2019</em>, Berhampur University, Odisha, India<br>
-                                                15th–16th March 2019
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Entry 3 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading3">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse3">
-                                                Trust Evaluation Mechanism in Ad Hoc Social Network using Communication Data Value
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse3" class="accordion-collapse collapse" data-bs-parent="#natConfAccordion">
-                                            <div class="accordion-body">
-                                                S. N. Tripathy, B. K. Tripathy, S. K. Nahak, M. Pattnayak<br>
-                                                In <em>National Seminar on IT – Vision 2020</em>, 21st February 2008, pp. 42–48
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Entry 4 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading4">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse4">
-                                                Designing A Trust Model for Human Interaction in Ad Hoc Social Network
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse4" class="accordion-collapse collapse" data-bs-parent="#natConfAccordion">
-                                            <div class="accordion-body">
-                                                S. N. Tripathy<br>
-                                                In <em>BITCON’07</em>, National Conference on Secure Transaction, 16–17 March 2007, pp. 42–48
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Entry 5 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading5">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse5">
-                                                Trust Evaluation Mechanism in Ad Hoc Social Network
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse5" class="accordion-collapse collapse" data-bs-parent="#natConfAccordion">
-                                            <div class="accordion-body">
-                                                S. N. Tripathy, B. K. Tripathy & S. K. Dash<br>
-                                                In <em>NCIS’07</em>, National Conference on Intelligence Systems, 17–18 February 2007, pp. 65–71
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Entry 6 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading6">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse6">
-                                                A Study of Some Threats and Attacks of Ad Hoc Social Networks
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse6" class="accordion-collapse collapse" data-bs-parent="#natConfAccordion">
-                                            <div class="accordion-body">
-                                                S. N. Tripathy<br>
-                                                Presented at <em>MPCCET</em>, 2–3 March 2007 (Electronic-format publications)
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Entry 7 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading7">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse7">
-                                                Networks Security Model: An Incremental Approach to Network Security
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse7" class="accordion-collapse collapse" data-bs-parent="#natConfAccordion">
-                                            <div class="accordion-body">
-                                                S. N. Tripathy<br>
-                                                In <em>NSWAP</em>, Gandhi Institute of Engineering & Technology (GIET), Odisha<br>
-                                                30 Sep – 01 Oct 2001
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Entry 8 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="confHeading8">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confCollapse8">
-                                                Multilingual: The Next Generation Challenge
-                                            </button>
-                                        </h2>
-                                        <div id="confCollapse8" class="accordion-collapse collapse" data-bs-parent="#natConfAccordion">
-                                            <div class="accordion-body">
-                                                S. N. Tripathy<br>
-                                                In <em>Relation '97</em>, All India MCA Meet, University of Hyderabad, 7–9 March 1997
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                    <?php foreach ($researches as $key => $category): ?>
+                                        <button
+                                            class="nav-link text-start text-decoration-none py-4 <?php echo ($key === $keys[0]) ? 'active' : ''; ?>"
+                                            id="<?php echo esc_attr($key); ?>-tab"
+                                            data-bs-toggle="pill"
+                                            data-bs-target="#<?php echo esc_attr($key); ?>"
+                                            type="button"
+                                            role="tab"
+                                            aria-controls="<?php echo esc_attr($key); ?>"
+                                            aria-selected="<?php echo ($key === $keys[0]) ? 'true' : 'false'; ?>">
+                                            <i class="bi bi-chevron-right"></i>
+                                            <?php echo ucwords(str_replace('_', ' ', $key)); ?>
+                                        </button>
+                                        <hr class="my-2 text-muted">
+                                    <?php endforeach; ?>
                                 </div>
                             </div>
-
-                            <!-- National Journal Tab -->
-                            <div class="tab-pane fade" id="nat-journal" role="tabpanel" aria-labelledby="nat-journal-tab">
-                                <div class="mb-4">
-                                    <h4 class="fw-bold">National Journal Publications</h4>
-                                    <p class="text-muted">
-                                        Listed below are peer-reviewed research publications featured in reputed national journals. These works span various domains including biomedical signal processing, Android malware detection, cardiovascular disease prediction, and more — highlighting the depth and impact of national-level scholarly research.
-                                    </p>
-                                </div>
-
-                                <div class="accordion" id="natJournalAccordion">
-
-                                    <!-- Publication 1 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="natHeading1">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#natCollapse1">
-                                                A Survey on Enhancing Antral Gastritis Diagnosis Using Explainable Artificial Intelligence
-                                            </button>
-                                        </h2>
-                                        <div id="natCollapse1" class="accordion-collapse collapse show" data-bs-parent="#natJournalAccordion">
-                                            <div class="accordion-body">
-                                                Lalit Kumar Behera, and Satya Narayan Tripathy<br>
-                                                <em>Research Journal of Berhampur University (RJBU)</em>, ISSN: 2250-1681, Volume-VIII, Dec 2024, pp. 21-25.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 2 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="natHeading2">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#natCollapse2">
-                                                Comprehensive Literature Review for Developing a Hybrid Deep Learning Framework with Explainable AI
-                                            </button>
-                                        </h2>
-                                        <div id="natCollapse2" class="accordion-collapse collapse" data-bs-parent="#natJournalAccordion">
-                                            <div class="accordion-body">
-                                                Dibas Kumar Hembram, and Satya Narayan Tripathy<br>
-                                                <em>RJBU</em>, Volume-VIII, Dec 2024, pp. 16–20.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 3 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="natHeading3">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#natCollapse3">
-                                                Biomedical Signal Processing for ECG Classification to detect Heart disease using Deep Learning
-                                            </button>
-                                        </h2>
-                                        <div id="natCollapse3" class="accordion-collapse collapse" data-bs-parent="#natJournalAccordion">
-                                            <div class="accordion-body">
-                                                Lalit Kumar Behera, and Satya Narayan Tripathy<br>
-                                                <em>RJBU</em>, Volume-VIII, Dec 2024, pp. 26–29.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 4 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="natHeading4">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#natCollapse4">
-                                                Enhancing Android Malware Detection and Interpretability Through Explainable Deep Learning Models
-                                            </button>
-                                        </h2>
-                                        <div id="natCollapse4" class="accordion-collapse collapse" data-bs-parent="#natJournalAccordion">
-                                            <div class="accordion-body">
-                                                Diptimayee Sahu, Satya Narayan Tripathy, Sisira Kumar Kapat, M Soujanya<br>
-                                                <em>RJBU</em>, Volume-VII, April 2024, pp. 14–22.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 5 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="natHeading5">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#natCollapse5">
-                                                A Survey on Lung Cancer Forecasting using Deep Learning Techniques
-                                            </button>
-                                        </h2>
-                                        <div id="natCollapse5" class="accordion-collapse collapse" data-bs-parent="#natJournalAccordion">
-                                            <div class="accordion-body">
-                                                Pragnya Das, and Satya Narayan Tripathy<br>
-                                                <em>RJBU</em>, Volume-VII, April 2024, pp. 35–38.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 6 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="natHeading6">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#natCollapse6">
-                                                Trust Evolution Mechanism in Ad Hoc Social Network using Intrusion Detection
-                                            </button>
-                                        </h2>
-                                        <div id="natCollapse6" class="accordion-collapse collapse" data-bs-parent="#natJournalAccordion">
-                                            <div class="accordion-body">
-                                                S. N. Tripathy, B. K. Tripathy, G. N. Pradhan<br>
-                                                <em>SIDDHANT: A Journal of Decision Making</em>, Vol. 8(2&3), Apr–Sep 2008, pp. 67–72.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Publication 7 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="natHeading7">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#natCollapse7">
-                                                Possible Terrorization in Ad Hoc Social Networks
-                                            </button>
-                                        </h2>
-                                        <div id="natCollapse7" class="accordion-collapse collapse" data-bs-parent="#natJournalAccordion">
-                                            <div class="accordion-body">
-                                                S. N. Tripathy, B. K. Tripathy, G. N. Pradhan<br>
-                                                <em>SIDDHANT</em>, ISSN:0091/2002-TC, Vol. 7(2), Apr–Jun 2007, pp. 48–54.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
                         </div>
                     </div>
 
+                    <!-- Tab Content -->
+                    <div class="col-lg-9 ps-lg-5" data-aos="fade-up" data-aos-delay="200">
+                        <div class="tab-content" id="pubTabContent">
+                            <?php foreach ($researches as $key => $category): ?>
+                                <div class="tab-pane fade <?php echo ($key === $keys[0]) ? 'show active' : ''; ?>"
+                                    id="<?php echo esc_attr($key); ?>"
+                                    role="tabpanel"
+                                    aria-labelledby="<?php echo esc_attr($key); ?>-tab">
+
+                                    <div class="mb-4">
+                                        <h4 class="fw-bold"><?php echo esc_html($category->title); ?></h4>
+                                        <p class="text-muted"><?php echo esc_html($category->description); ?></p>
+                                    </div>
+
+                                    <?php render_research_accordion($category->data, ucfirst(str_replace('_', '', $key))); ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
                 </div>
 
             </div>
-
         </section>
     </section>
 

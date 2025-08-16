@@ -77,7 +77,64 @@
 <!-- Main JS File -->
 <script src="<?php echo get_template_directory_uri(); ?>/assets/js/main.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <?php wp_footer(); ?>
+
+<script>
+    const bookSwiper = new Swiper('.bookSwiper', {
+        slidesPerView: 4,
+        slidesPerGroup: 1, // Slide one by one
+        spaceBetween: 30,
+        loop: true,
+
+        autoplay: {
+            delay: 1000, // 3000ms = 3 seconds
+            disableOnInteraction: false, // Continue autoplay after user interaction
+        },
+
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+            },
+            576: {
+                slidesPerView: 2,
+            },
+            768: {
+                slidesPerView: 3,
+            },
+            992: {
+                slidesPerView: 4,
+            }
+        }
+    });
+
+
+    var researchSwiper = new Swiper(".researchSwiper", {
+        slidesPerView: 2,
+        spaceBetween: 30,
+        loop: true,
+        autoplay: {
+            delay: 2000,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+            },
+            576: {
+                slidesPerView: 2,
+            }
+        }
+    });
+</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {

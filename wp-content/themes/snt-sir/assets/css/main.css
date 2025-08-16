@@ -21,22 +21,34 @@
 
 /* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
 :root {
-  --background-color: #ffffff; /* Background color for the entire website, including individual sections */
-  --default-color: #444444; /* Default color used for the majority of the text content across the entire website */
-  --heading-color: #0737c8; /* Color for headings, subheadings and title throughout the website */
-  --accent-color: #5a80f4; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
-  --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
-  --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
+  --background-color: #ffffff;
+  /* Background color for the entire website, including individual sections */
+  --default-color: #444444;
+  /* Default color used for the majority of the text content across the entire website */
+  --heading-color: #0737c8;
+  /* Color for headings, subheadings and title throughout the website */
+  --accent-color: #5a80f4;
+  /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
+  --surface-color: #ffffff;
+  /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
+  --contrast-color: #ffffff;
+  /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
 }
 
 /* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
 :root {
-  --nav-color: #5f687b; /* The default color of the main navmenu links */
-  --nav-hover-color: #5a80f4; /* Applied to main navmenu links when they are hovered over or active */
-  --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
-  --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
-  --nav-dropdown-color: #5f687b; /* Used for navigation links of the dropdown items in the navigation menu. */
-  --nav-dropdown-hover-color: #10bc69; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
+  --nav-color: #5f687b;
+  /* The default color of the main navmenu links */
+  --nav-hover-color: #5a80f4;
+  /* Applied to main navmenu links when they are hovered over or active */
+  --nav-mobile-background-color: #ffffff;
+  /* Used as the background color for mobile navigation menu */
+  --nav-dropdown-background-color: #ffffff;
+  /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
+  --nav-dropdown-color: #5f687b;
+  /* Used for navigation links of the dropdown items in the navigation menu. */
+  --nav-dropdown-hover-color: #10bc69;
+  /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
 }
 
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
@@ -154,10 +166,8 @@ h6 {
 .pulsating-play-btn {
   width: 94px;
   height: 94px;
-  background: radial-gradient(
-    var(--accent-color) 50%,
-    color-mix(in srgb, var(--accent-color), transparent 75%) 52%
-  );
+  background: radial-gradient(var(--accent-color) 50%,
+      color-mix(in srgb, var(--accent-color), transparent 75%) 52%);
   border-radius: 50%;
   display: block;
   position: relative;
@@ -342,7 +352,7 @@ h6 {
     padding-right: 0;
   }
 
-  .navmenu li:hover > a,
+  .navmenu li:hover>a,
   .navmenu .active,
   .navmenu .active:focus {
     color: var(--nav-hover-color);
@@ -381,11 +391,11 @@ h6 {
 
   .navmenu .dropdown ul a:hover,
   .navmenu .dropdown ul .active:hover,
-  .navmenu .dropdown ul li:hover > a {
+  .navmenu .dropdown ul li:hover>a {
     color: var(--nav-dropdown-hover-color);
   }
 
-  .navmenu .dropdown:hover > ul {
+  .navmenu .dropdown:hover>ul {
     opacity: 1;
     top: 100%;
     visibility: visible;
@@ -397,7 +407,7 @@ h6 {
     visibility: hidden;
   }
 
-  .navmenu .dropdown .dropdown:hover > ul {
+  .navmenu .dropdown .dropdown:hover>ul {
     opacity: 1;
     top: 0;
     left: -100%;
@@ -500,7 +510,7 @@ h6 {
     background-color: rgba(33, 37, 41, 0.1);
   }
 
-  .navmenu .dropdown > .dropdown-active {
+  .navmenu .dropdown>.dropdown-active {
     display: block;
     background-color: rgba(33, 37, 41, 0.03);
   }
@@ -527,7 +537,7 @@ h6 {
     transition: 0.3s;
   }
 
-  .mobile-nav-active .navmenu > ul {
+  .mobile-nav-active .navmenu>ul {
     display: block;
   }
 }
@@ -676,8 +686,7 @@ h6 {
 
 .footer .copyright {
   padding: 25px 0;
-  border-top: 1px solid
-    color-mix(in srgb, var(--default-color), transparent 90%);
+  border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
 }
 
 .footer .copyright p {
@@ -793,11 +802,11 @@ h6 {
   font-weight: 400;
 }
 
-.page-title .breadcrumbs ol li + li {
+.page-title .breadcrumbs ol li+li {
   padding-left: 10px;
 }
 
-.page-title .breadcrumbs ol li + li::before {
+.page-title .breadcrumbs ol li+li::before {
   content: "/";
   display: inline-block;
   padding-right: 10px;
@@ -816,6 +825,7 @@ section,
 }
 
 @media (max-width: 1199px) {
+
   section,
   .section {
     scroll-margin-top: 66px;
@@ -1566,20 +1576,14 @@ section,
   position: relative;
 }
 
-.portfolio-details
-  .portfolio-details-slider
-  .swiper-pagination
-  .swiper-pagination-bullet {
+.portfolio-details .portfolio-details-slider .swiper-pagination .swiper-pagination-bullet {
   width: 12px;
   height: 12px;
   background-color: color-mix(in srgb, var(--default-color), transparent 85%);
   opacity: 1;
 }
 
-.portfolio-details
-  .portfolio-details-slider
-  .swiper-pagination
-  .swiper-pagination-bullet-active {
+.portfolio-details .portfolio-details-slider .swiper-pagination .swiper-pagination-bullet-active {
   background-color: var(--accent-color);
 }
 
@@ -1594,8 +1598,7 @@ section,
   font-weight: 700;
   margin-bottom: 20px;
   padding-bottom: 20px;
-  border-bottom: 1px solid
-    color-mix(in srgb, var(--default-color), transparent 85%);
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
 }
 
 .portfolio-details .portfolio-info ul {
@@ -1604,7 +1607,7 @@ section,
   font-size: 15px;
 }
 
-.portfolio-details .portfolio-info ul li + li {
+.portfolio-details .portfolio-info ul li+li {
   margin-top: 10px;
 }
 
@@ -1632,15 +1635,14 @@ section,
   box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.1);
 }
 
-.service-details .service-box + .service-box {
+.service-details .service-box+.service-box {
   margin-top: 30px;
 }
 
 .service-details .service-box h4 {
   font-size: 20px;
   font-weight: 700;
-  border-bottom: 2px solid
-    color-mix(in srgb, var(--default-color), transparent 92%);
+  border-bottom: 2px solid color-mix(in srgb, var(--default-color), transparent 92%);
   padding-bottom: 15px;
   margin-bottom: 15px;
 }
@@ -1689,8 +1691,7 @@ section,
   align-items: center;
   padding: 10px 0;
   transition: 0.3s;
-  border-top: 1px solid
-    color-mix(in srgb, var(--default-color), transparent 90%);
+  border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
 }
 
 .service-details .download-catalog a:first-child {
@@ -1805,12 +1806,15 @@ section,
 #stats-section .counter-box.colored1 {
   background: #3acf87;
 }
+
 #stats-section .counter-box.colored2 {
   background: #cdcf3a;
 }
+
 #stats-section .counter-box.colored3 {
   background: #3a78cf;
 }
+
 #stats-section .counter-box.colored4 {
   background: #cf693a;
 }
@@ -1820,13 +1824,15 @@ section,
 #stats-section .counter-box.colored .counter {
   color: #fff;
 }
+
 /* ============ END Home page Increment Counter section ============ */
 
 /* ============ START Home page Increment Counter section ============ */
 .item small.title {
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
-  display: block; /* Ensure layout space is preserved */
+  display: block;
+  /* Ensure layout space is preserved */
   height: 0;
   overflow: hidden;
 }
@@ -1835,14 +1841,61 @@ section,
   opacity: 1;
   height: auto;
 }
+
 /* ============ END Home page Increment Counter section ============ */
+
+/* Apply these styles only on screens greater than tablet (md and larger) */
+@media (min-width: 992px) {
+
+  /* Carousel container should have a max height of 60vh */
+  #heroCarousel {
+    max-height: 60vh;
+    overflow: hidden;
+    /* Ensure no content overflows */
+  }
+
+  /* Make sure the images fill the carousel space properly */
+  #heroCarousel .carousel-item {
+    height: 100%;
+    /* Ensure carousel items fill the height */
+  }
+
+  #heroCarousel .carousel-item img {
+    object-fit: cover;
+    /* Ensure the image covers the space without distorting */
+    height: 100%;
+    width: 100%;
+    object-position: center;
+    /* Center the image within the container */
+  }
+}
+
+@media (max-width: 992px) {
+
+  /* Make sure the images fill the carousel space properly */
+  #heroCarousel .carousel-item {
+    height: 100%;
+    /* Ensure carousel items fill the height */
+  }
+
+  #heroCarousel .carousel-item img {
+    object-fit: cover;
+    /* Ensure the image covers the space without distorting */
+    height: 100%;
+    max-height: 50vh;
+    overflow: hidden;
+    width: 100%;
+    object-position: center;
+    /* Center the image within the container */
+  }
+}
 
 .starter-section {
   background-color: #f8f8f8;
 }
 
 .nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
+.nav-pills .show>.nav-link {
   color: white;
   background-color: #24c275;
 }
@@ -1855,9 +1908,11 @@ section,
   margin-bottom: 0.5rem;
   line-height: 1.5;
 }
+
 #conferenceDetails ul li {
   text-align: justify;
 }
+
 ul li {
   text-align: justify;
 }
@@ -1876,37 +1931,196 @@ ul li {
   margin: 0 10px;
   color: var(--nav-color);
 }
+
 #sub-navmenu li {
   cursor: pointer;
+
   :hover {
     color: var(--accent-color);
   }
 }
-.text-justify{
+
+.text-justify {
   text-align: justify !important;
 }
 
 .section .container .font-bold .hilight-1 {
-  
-    font-size: larger;
-    font-weight: bold;
-    font-family: cursive;
-    font-style: italic;
-    color: #ff0000;
+
+  font-size: larger;
+  font-weight: bold;
+  font-family: cursive;
+  font-style: italic;
+  color: #ff0000;
 }
+
 .section .container .font-bold .hilight-2 {
-  
-    font-size: larger;
-    font-weight: bold;
-    font-family: cursive;
-    font-style: italic;
-    color: #04c26a;
+
+  font-size: larger;
+  font-weight: bold;
+  font-family: cursive;
+  font-style: italic;
+  color: #04c26a;
 }
+
 .section .container .font-bold .hilight-3 {
-  
-    font-size: larger;
-    font-weight: bold;
-    font-family: cursive;
-    font-style: italic;
-    color: #bcce00;
+
+  font-size: larger;
+  font-weight: bold;
+  font-family: cursive;
+  font-style: italic;
+  color: #bcce00;
+}
+
+
+
+/* =================== Research Page Start =================== */
+
+.research_interests {
+  background: #efffdd;
+}
+
+.category-title {
+  font-weight: 700;
+  color: #ff6b00;
+  /* Orange */
+}
+
+.underline {
+  border-bottom: 3px solid #ff6b00;
+  width: 120px;
+  margin: 0 auto;
+}
+
+.category-box {
+  transition: transform 0.2s;
+}
+
+.category-box:hover {
+  transform: scale(1.05);
+}
+
+.category-img {
+  width: 75px;
+  height: 75px;
+  margin-bottom: 10px;
+}
+
+.category-text {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.category-card {
+  padding: 20px 0;
+  border-right: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.row .col-4:nth-child(3),
+.row .col-4:nth-child(6) {
+  border-right: none;
+}
+
+.row .col-4:nth-child(4),
+.row .col-4:nth-child(5),
+.row .col-4:nth-child(6) {
+  border-bottom: none;
+}
+
+/* =================== Research Page End =================== */
+/* =================== Research Publication Page Start =================== */
+
+.swiper.bookSwiper {
+  padding: 20px 0;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.book-card {
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.book-card:hover {
+  transform: scale(1.02);
+  border-color: #007bff;
+}
+
+.book-card img {
+  width: 300px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* =================== Research Publication Page End =================== */
+.testimonial-section {
+  text-align: center;
+  padding: 50px 0;
+}
+
+.testimonial-section h2 {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.testimonial-card {
+  background: #fff7e6;
+  border-radius: 15px;
+  padding: 30px 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  max-width: 500px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.testimonial-card img {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+.testimonial-card p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  text-align: center;
+}
+
+.testimonial-card h6 {
+  margin-top: 15px;
+  font-weight: bold;
+  color: #222;
+  text-align: center;
+}
+
+/* Tablet & desktop view: image left, text right */
+@media (min-width: 768px) {
+  .testimonial-card {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+  }
+
+  .testimonial-card img {
+    margin: 0 20px 0 0;
+  }
+
+  .testimonial-card p, 
+  .testimonial-card h6 {
+    text-align: left;
+  }
 }
