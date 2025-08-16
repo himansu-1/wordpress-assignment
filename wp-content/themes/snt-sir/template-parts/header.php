@@ -80,7 +80,7 @@
                     <li><a class="<?php if (is_page('research')) echo 'active'; ?>" href="<?php echo home_url('/research'); ?>">Research</a></li>
                     <li><a class="<?php if (is_page('project')) echo 'active'; ?>" href="<?php echo home_url('/project'); ?>">Project</a></li>
                     <li><a class="<?php if (is_page('academic')) echo 'active'; ?>" href="<?php echo home_url('/academic'); ?>">Academic</a></li>
-                    <li><a class="<?php if (is_page('health_welness')) echo 'active'; ?>" href="<?php echo home_url('/health_welness'); ?>">Health & Welness</a></li>
+                    <li><a class="<?php if (is_page('health-and-wellness')) echo 'active'; ?>" href="<?php echo home_url('/health-and-wellness'); ?>">Health & Welness</a></li>
                     <li><a class="<?php if (is_page('blogs')) echo 'active'; ?>" href="<?php echo home_url('/blogs'); ?>">Blogs</a></li>
                     <li><a class="<?php if (is_page('media_outreach')) echo 'active'; ?>" href="<?php echo home_url('/media_outreach'); ?>">Media & Outreach</a></li>
                     <li><a class="<?php if (is_page('startup')) echo 'active'; ?>" href="<?php echo home_url('/startup'); ?>">Start-Up</a></li>
